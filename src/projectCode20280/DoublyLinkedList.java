@@ -3,43 +3,68 @@ package projectCode20280;
 import java.util.Iterator;
 
 public class DoublyLinkedList<E> implements List<E> {
+	Node<E> head;
+	private int length;
 
 	private class Node<E> {
-		
+		E data;
+		Node<E> next;
+		Node<E> prev;
+
+		public Node(E e){
+			this.data = e;
+		}
 	}
 	
 	private void addBetween(E e, Node<E> predecessor, Node<E> successor) {
-		// TODO
+		Node<E> curr = this.head;
+		while(curr != null && !(curr.prev == predecessor && curr.next == successor)){
+			curr = curr.next;
+		}
+		if(curr != null){
+			curr.prev = curr.next;
+		}
 	}
 	
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.length;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.size() == 0;
 	}
 
 	@Override
-	public E get(int i) {
-		// TODO Auto-generated method stub
-		return null;
+	public E get(int index) {
+		Node<E> curr = this.head;
+		for(int i = 0; curr != null && i < index; i++){
+			curr = curr.next
+		}
+		return curr.data;
 	}
 
 	@Override
-	public void add(int i, E e) {
-		// TODO Auto-generated method stub
-		
+	public void add(int index, E e) {
+		Node<E> curr = this.head;
+		for(int i = 0; curr != null && i < index; i++){
+			curr = curr.next;
+		}
+		Node<E> newNode = new Node<E>(e);
+		curr.prev.next = newNode;
+		newNode.next = curr;
+		newNode.prev = curr.prev;
 	}
 
 	@Override
-	public E remove(int i) {
-		// TODO Auto-generated method stub
-		return null;
+	public E remove(int index) {
+		Node<E> curr = this.head;
+		for(int i = 0; curr != null && i < index; i++){
+			curr = curr.next;
+		}
+		curr.prev.next = curr.next;
+		return curr.data;
 	}
 
 	@Override
@@ -52,27 +77,40 @@ public class DoublyLinkedList<E> implements List<E> {
 
 	@Override
 	public E removeFirst() {
-		// TODO Auto-generated method stub
-		return null;
+		E data = this.head.data;
+		this.head = this.head.next;
+		this.head.prev = null;
+		return data;
 	}
 
 	@Override
 	public E removeLast() {
-		// TODO Auto-generated method stub
-		return null;
+		Node<E> curr = this.head;
+		while(curr.next != null){
+			curr = curr.next;
+		}
+		E data = curr.data;
+		curr.prev.next = null;
+		curr.prev = null;
+		return data;
 	}
 	
 
 	@Override
 	public void addFirst(E e) {
-		// TODO Auto-generated method stub
-		
+		Node<E> newNode = new Node<E>(e);
+		newNode.next = this.head;
+		newNode.next.prev = newNode;
 	}
 
 	@Override
 	public void addLast(E e) {
-		// TODO Auto-generated method stub
-		
+		Node<E> curr = this.head;
+		while(curr.next != null){
+			curr = curr.next;
+		}
+		curr.next = new Node<E>(e);
+		curr.next.prev = curr;
 	}
 	
 	public static void main(String[] args) {
