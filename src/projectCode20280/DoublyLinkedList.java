@@ -6,7 +6,7 @@ public class DoublyLinkedList<E> implements List<E> {
 	Node<E> head;
 	private int length;
 
-	private class Node<E> {
+	private static class Node<E> {
 		E data;
 		Node<E> next;
 		Node<E> prev;
@@ -40,7 +40,7 @@ public class DoublyLinkedList<E> implements List<E> {
 	public E get(int index) {
 		Node<E> curr = this.head;
 		for(int i = 0; curr != null && i < index; i++){
-			curr = curr.next
+			curr = curr.next;
 		}
 		return curr.data;
 	}
