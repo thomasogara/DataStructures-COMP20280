@@ -1,40 +1,69 @@
 package projectCode20280;
 
 public class LinkedStack<E> implements Stack<E> {
+	private int length;
+	private Node<E> head;
+
+	private static class Node<E>{
+		E data;
+		Node<E> next;
+		Node(E e){
+			this.data = e;
+		}
+	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		LinkedStack<Integer> stack = new LinkedStack<>();
+		stack.push(1);
+		stack.push(2);
+		stack.push(3);
+		stack.push(4);
+		stack.push(5);
+		stack.push(6);
+		stack.push(7);
+		stack.push(8);
+		stack.push(9);
+		stack.push(10);
+		stack.push(11);
+		stack.push(12);
+		while(!stack.isEmpty()){
+			System.out.println(stack.pop());
+		}
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.length;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.size() == 0;
 	}
 
 	@Override
 	public void push(E e) {
-		// TODO Auto-generated method stub
-		
+		Node<E> top = new Node<>(e);
+		top.next = this.head;
+		this.head = top;
+		this.length++;
 	}
 
 	@Override
 	public E top() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.head.data;
 	}
 
 	@Override
 	public E pop() {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.head != null) {
+			E data = this.head.data;
+			this.head = this.head.next;
+			this.length--;
+			return data;
+		}else{
+			throw new RuntimeException("this stack is empty, head cannot be popped");
+		}
 	}
 
 }

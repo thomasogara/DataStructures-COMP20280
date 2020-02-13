@@ -1,40 +1,81 @@
 package projectCode20280;
 
 public class LinkedQueue<E> implements Queue<E> {
+	public Node<E> front;
+	public Node<E> rear;
+
+	public int length;
+
+	private static class Node<E>{
+		E data;
+		Node<E> next;
+		Node<E> prev;
+
+		Node(E e){
+			this.data = e;
+		}
+	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		LinkedQueue<Integer> queue = new LinkedQueue<>();
+		queue.enqueue(1);
+		queue.enqueue(2);
+		queue.enqueue(3);
+		queue.enqueue(4);
+		queue.enqueue(5);
+		queue.enqueue(6);
+		queue.enqueue(7);
+		queue.enqueue(8);
+		queue.enqueue(9);
+		queue.enqueue(10);
+		while(!queue.isEmpty()){
+			System.out.println(queue.dequeue());
+		}
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.length;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.size() == 0;
 	}
 
 	@Override
 	public void enqueue(E e) {
-		// TODO Auto-generated method stub
-		
+		Node<E> last = new Node<>(e);
+		if(this.rear == null){
+			this.rear = last;
+			this.front = last;
+		}else{
+			last.next = this.rear;
+			this.rear.prev = last;
+			this.rear = last;
+		}
+		this.length++;
 	}
 
 	@Override
 	public E first() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.front.data;
 	}
 
 	@Override
 	public E dequeue() {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.front != null){
+			E data = this.front.data;
+			if(this.front.prev != null) {
+				this.front.prev.next = null;
+			}
+			this.front = this.front.prev;
+			this.length--;
+			return data;
+		}else{
+			throw new RuntimeException("queue is empty, cannot dequeue");
+		}
+
 	}
 
 }

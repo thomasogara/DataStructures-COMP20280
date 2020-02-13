@@ -15,7 +15,7 @@ public class DoublyLinkedList<E> implements List<E> {
 			this.data = e;
 		}
 	}
-	
+
 	private void addBetween(E e, Node<E> predecessor, Node<E> successor) {
 		Node<E> curr = this.head;
 		while(curr != null && !(curr.prev == predecessor && curr.next == successor)){
@@ -25,7 +25,7 @@ public class DoublyLinkedList<E> implements List<E> {
 			curr.prev = curr.next;
 		}
 	}
-	
+
 	@Override
 	public int size() {
 		return this.length;
@@ -90,8 +90,10 @@ public class DoublyLinkedList<E> implements List<E> {
 			curr = curr.next;
 		}
 		E data = curr.data;
-		curr.prev.next = null;
-		curr.prev = null;
+		if(curr.prev != null) {
+			curr.prev.next = null;
+			curr.prev = null;
+		}
 		return data;
 	}
 	
@@ -99,8 +101,11 @@ public class DoublyLinkedList<E> implements List<E> {
 	@Override
 	public void addFirst(E e) {
 		Node<E> newNode = new Node<E>(e);
-		newNode.next = this.head;
-		newNode.next.prev = newNode;
+		if(this.head != null && this.head.next != null) {
+			newNode.next = this.head;
+			this.head.next.prev = newNode;
+		}
+		this.head = newNode;
 	}
 
 	@Override
