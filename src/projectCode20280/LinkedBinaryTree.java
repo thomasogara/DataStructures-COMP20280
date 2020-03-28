@@ -8,7 +8,21 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
 
   /** Nested static class for a binary tree node. */
   protected static class Node<E> implements Position<E> {
-	  // TODO
+      Node<E> parent;
+	  Node<E> left;
+      Node<E> right;
+      E data;
+
+      Node(E e, Node<E> parent, Node<E> left, Node<E> right){
+        this.data = e;
+        this.parent = parent;
+        this.left = left;
+        this.right = right;
+      }
+    
+      E getElement(){
+            return this.data;
+      }
   } 
 
   /** Factory function to create a new node storing element e. */
@@ -76,7 +90,8 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
    */
   @Override
   public Position<E> parent(Position<E> p) throws IllegalArgumentException {
-	//TODO
+    Node<E> node = validate(p);
+    return node.parent;
   }
 
   /**
@@ -88,7 +103,8 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
    */
   @Override
   public Position<E> left(Position<E> p) throws IllegalArgumentException {
-	//TODO
+    Node<E> node = validate(p);
+    return node.left;
   }
 
   /**
@@ -100,7 +116,8 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
    */
   @Override
   public Position<E> right(Position<E> p) throws IllegalArgumentException {
-	//TODO
+	Node<E> node = validate(p);
+    return node.right;
   }
 
   // update methods supported by this class
@@ -112,7 +129,8 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
    * @throws IllegalStateException if the tree is not empty
    */
   public Position<E> addRoot(E e) throws IllegalStateException {
-	//TODO
+	if(root != null) throw new IllegalStateException("root already exists for this tree");
+    else this.root = new Node<>(e);
   }
 
   public void insert(E e){
@@ -123,7 +141,7 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
   
   //recursively add Nodes to binary tree in proper position
   private Node<E> addRecursive(Node<E> p, E e){
-	//TODO
+	return null;
   }
 
   
@@ -138,7 +156,8 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
    */
   public Position<E> addLeft(Position<E> p, E e)
                           throws IllegalArgumentException {
-	//TODO
+    if(validate(p).left != null) throw new IllegalStateException("left already exists at this node");
+    else validate(p).left = new Node<>(e);
   }
 
   /**
@@ -152,7 +171,8 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
    */
   public Position<E> addRight(Position<E> p, E e)
                           throws IllegalArgumentException {
-	//TODO
+    if(validate(p).right != null) throw new IllegalStateException("right already exists at this node");
+    else validate(p).right = new Node<>(e);
   }
 
   /**
@@ -164,7 +184,7 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
    * @throws IllegalArgumentException if p is not a valid Position for this tree.
    */
   public E set(Position<E> p, E e) throws IllegalArgumentException {
-	  //TODO
+	  return null;
   }
 
   /**
@@ -179,7 +199,7 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
    */
   public void attach(Position<E> p, LinkedBinaryTree<E> t1,
                     LinkedBinaryTree<E> t2) throws IllegalArgumentException {
-	//TODO
+	return null;
   }
 
   /**
@@ -191,7 +211,7 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
    * @throws IllegalArgumentException if p has two children.
    */
   public E remove(Position<E> p) throws IllegalArgumentException {
-	//TODO
+	return null;
   }
   
   public String toString() {
