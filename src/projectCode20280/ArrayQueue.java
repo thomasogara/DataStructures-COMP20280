@@ -3,9 +3,10 @@ package projectCode20280;
 import java.util.ArrayList;
 
 public class ArrayQueue<E> implements Queue<E> {
-	private ArrayList<E> backing_array = new ArrayList<>();
+	private Object[] backing_array;
 	private int length;
 	private int front;
+	private int rear;
 
 	public static void main(String[] args){
 		ArrayQueue<Integer> queue = new ArrayQueue<>();

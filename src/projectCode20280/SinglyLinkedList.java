@@ -1,13 +1,12 @@
 package projectCode20280;
 
 import java.util.Iterator;
-import java.util.function.Consumer;
 
-public class SinglyLinkedList<E> implements List<E> {
+public class SinglyLinkedList<E> implements List<E>{
 	private Node<E> head;
 	private int length;
 
-	private static class Node<E> {
+	static class Node<E> {
 		E data;
 		Node<E> next;
 
@@ -16,35 +15,27 @@ public class SinglyLinkedList<E> implements List<E> {
 		}
 	}
 
-	private static class listIterator<E> implements Iterator<E>{
-		Node<E> head;
+	private static class ListIterator<E> implements Iterator<E>{
+		SinglyLinkedList<E> list;
+		int i;
 
-		public listIterator(Node<E> head){
-			this.head = head;
+		public ListIterator(SinglyLinkedList<E> list) {
+			this.list = list;
 		}
 
 		@Override
 		public boolean hasNext(){
-			return this.head != null;
+			try{
+				this.list.get(i);
+				return true;
+			}catch (IndexOutOfBoundsException ex){
+				return false;
+			}
 		}
 
 		@Override
 		public E next(){
-			E next = head.data;
-			this.head = this.head.next;
-			return next;
-		}
-
-		@Override
-		public void remove() {
-
-		}
-
-		@Override
-		public void forEachRemaining(Consumer<? super E> action) {
-			while(this.hasNext()){
-				action.accept(this.next());
-			}
+			return this.list.get(i++);
 		}
 	}
 	
@@ -55,41 +46,52 @@ public class SinglyLinkedList<E> implements List<E> {
 
 	@Override
 	public E get(int index) {
-		Node<E> curr = this.head;
-		for(int i = 0; i < index; i++){
-			curr = curr.next;
-		}
-		return curr.data;
+		if(index >= this.size() || index < 0) throw new IndexOutOfBoundsException(String.format("Index %d is out of bounds in list of size %d", index, this.size()));
+		return this.getNode(index).data;
 	}
 
-	@Override
-	public void add(int index, E e) {
-		Node<E> curr = this.head;
+	private Node<E> getNode(int index){
+		if(index > this.size() || index < 0) throw new IndexOutOfBoundsException(String.format("Index %d is out of bounds in list of size %d", index, this.size()));
+		Node<E> node = this.head;
 		for(int i = 0; i < index; i++){
-			curr = curr.next;
+			if(node != null) node = node.next;
 		}
+		return node;
+	}
 
+	public void add(int index, E e) {
+		if(index > this.size() || index < 0) throw new IndexOutOfBoundsException(String.format("Index %d is out of bounds in list of size %d", index, this.size()));
+		if(index == 0){
+			Node<E> newNode = new Node<>(e);
+			newNode.next = this.head;
+			this.head = newNode;
+		}else{
+			Node<E> temp = this.getNode(index);
+			Node<E> prev = this.getNode(index - 1);
+			Node<E> newNode = new Node<>(e);
+			newNode.next = temp;
+			if (prev != null) prev.next = newNode;
+		}
 		this.length++;
-		curr.data = e;
 	}
 
 	@Override
 	public E remove(int index) {
-		Node<E> prev = this.head;
-		Node<E> curr = prev.next;
-		for(int i = 0; i < index-1; i++){
-			prev = curr;
-			curr = curr.next;
+		if(index >= this.size() || index < 0) throw new IndexOutOfBoundsException(String.format("Index %d is out of bounds in list of size %d", index, this.size()));
+		Node<E> discard = this.getNode(index);
+		if(index == 0){
+			this.head = this.head.next;
+		}else{
+			Node<E> prev = this.getNode(index - 1);
+			prev.next = discard.next;
 		}
-		prev.next = curr.next;
-
 		this.length--;
-		return curr.data;
+		return discard.data;
 	}
 
 	@Override
 	public Iterator<E> iterator() {
-		return new listIterator<E>(this.head);
+		return new ListIterator<E>(this);
 	}
 
 	@Override
@@ -100,47 +102,22 @@ public class SinglyLinkedList<E> implements List<E> {
 
 	@Override
 	public E removeFirst() {
-		E headData = this.head.data;
-		this.head = this.head.next;
-
-		this.length--;
-		return headData;
+		return this.remove(0);
 	}
 
 	@Override
 	public E removeLast() {
-		Node<E> prev = this.head;
-		Node<E> curr = prev.next;
-		for(int i = 0; i < this.length-1; i++){
-			prev = curr;
-			curr = curr.next;
-		}
-		prev.next = curr.next;
-
-		this.length--;
-		return curr.data;
+		return this.remove(this.size() - 1);
 	}
 
 	@Override
 	public void addFirst(E e) {
-		Node<E> newHead = new Node<E>(e);
-		if(this.head != null) {
-			newHead.next = this.head.next;
-		}
-
-		this.length++;
-		this.head = newHead;
+		this.add(0, e);
 	}
 
 	@Override
 	public void addLast(E e) {
-		Node<E> curr = this.head;
-		while(curr.next != null){
-			curr = curr.next;
-		}
-
-		this.length++;
-		curr.next = new Node<E>(e);
+		this.add(this.size(), e);
 	}
 
 	@Override
@@ -158,21 +135,21 @@ public class SinglyLinkedList<E> implements List<E> {
 	public static void main(String[] args) {
 		String[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-		SinglyLinkedList<String> sll = new SinglyLinkedList<String>();
+		SinglyLinkedList<String> sll = new SinglyLinkedList<>();
 		for (String s : alphabet) {
 			sll.addFirst(s);
 			sll.addLast(s);
 		}
-		System.out.println(sll.toString());
+		System.out.println(sll);
 
 		sll.removeFirst();
-		System.out.println(sll.toString());
+		System.out.println(sll);
 		
 		sll.removeLast();
-		System.out.println(sll.toString());
+		System.out.println(sll);
 
 		sll.remove(2);
-		System.out.println(sll.toString());
+		System.out.println(sll);
 		
 		for (String s : sll) {
 			System.out.print(s + ", ");

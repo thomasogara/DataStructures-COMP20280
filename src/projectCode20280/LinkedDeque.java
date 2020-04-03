@@ -1,58 +1,57 @@
 package projectCode20280;
 
 public class LinkedDeque<E> implements Deque<E> {
+	private DoublyLinkedList<E> list;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 	}
 
+	public LinkedDeque(){
+		this.list = new DoublyLinkedList<>();
+	}
+
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.list.size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.size() == 0;
 	}
 
 	@Override
 	public E first() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.list.get(0);
 	}
 
 	@Override
 	public E last() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.list.get(this.list.size() - 1);
 	}
 
 	@Override
 	public void addFirst(E e) {
-		// TODO Auto-generated method stub
+		this.list.addFirst(e);
 		
 	}
 
 	@Override
 	public void addLast(E e) {
-		// TODO Auto-generated method stub
+		this.list.addLast(e);
 		
 	}
 
 	@Override
 	public E removeFirst() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.list.removeFirst();
 	}
 
 	@Override
 	public E removeLast() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.list.removeLast();
 	}
 
 }

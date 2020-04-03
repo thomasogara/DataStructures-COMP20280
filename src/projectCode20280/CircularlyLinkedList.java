@@ -15,10 +15,7 @@ public class CircularlyLinkedList<E> implements List<E> {
 		}
 
 		public String toString(Node<E> tail) {
-			return "Node{" +
-					"data=" + data +
-					", next=" + (next != tail && next != null ? next.toString(tail) : "HEAD") +
-					'}';
+			return data + " -> " + (next != tail && next != null ? next.toString(tail) : "TAIL");
 		}
 	}
 
@@ -54,59 +51,66 @@ public class CircularlyLinkedList<E> implements List<E> {
 
 	@Override
 	public E get(int index) {
+		if(index >= this.size() || index < 0) throw new IndexOutOfBoundsException(String.format("Index %d is out of bounds in list of size %d", index, this.size()));
 		return this.getNode(index).data;
 	}
 
 	private Node<E> getNode(int index){
+		if(index > this.size() || index < 0) throw new IndexOutOfBoundsException(String.format("Index %d is out of bounds in list of size %d", index, this.size()));
 		Node<E> curr = this.tail;
-		int i;
-		for(i = 0; i < index; i++){
-			if(curr.next != null) {
-				curr = curr.next;
-			}else{
-				return null;
-			}
+		for(int i = 0; i < index; i++){
+			if(curr.next != null) curr = curr.next;
 		}
 		return curr;
 	}
 
 	@Override
 	public void add(int i, E e) {
-		Node<E> newNode = new Node(e);
-		if (this.tail == null) {
+		if(i > this.size() || i < 0) throw new IndexOutOfBoundsException(String.format("Index %d is out of bounds in list of size %d", i, this.size()));
+		Node<E> newNode = new Node<>(e);
+		if (i == 0) {
+			Node<E> next = this.tail;
+			Node<E> last = null;
+			if(this.tail != null) last = this.getNode(this.size() - 1);
+			if(last != null) last.next = newNode;
+			newNode.next = this.tail;
 			this.tail = newNode;
-			this.tail.next = tail;
-			this.length++;
-			return;
+
+		}else if(i == this.size()){
+			newNode.next = this.tail;
+			this.getNode(i - 1).next = newNode;
+		}else{
+			newNode.next = this.getNode(i);
+			this.getNode(i - 1).next = newNode;
 		}
-		newNode.next = this.getNode(i).next;
-		this.getNode(i).next = newNode;
 		this.length++;
 	}
 
 	@Override
 	public E remove(int i) {
-		E data = this.get(i);
-		this.getNode(i-1).next = this.getNode(i).next;
+		if(i >= this.size() || i < 0) throw new IndexOutOfBoundsException(String.format("Index %d is out of bounds in list of size %d", i, this.size()));
+		if(this.tail == null) throw new IllegalStateException("Cannot remove from empty list");
+		Node<E> node;
+		if(i == 0){
+			node = this.tail;
+			this.getNode(this.size() - 1).next = this.tail.next;
+			this.tail = this.tail.next;
+		}else{
+			node = this.getNode(i);
+			this.getNode(i - 1).next = node.next;
+		}
 		this.length--;
-		return data;
+		return node.data;
 	}
 
 	@Override
 	public E removeFirst() {
-		Node<E> old = this.tail;
-		Node<E> last = this.getNode(this.size() - 1);
-		last.next = old.next;
-		this.tail = last.next;
-		this.length--;
-		return old.data;
+		return this.remove(0);
 	}
 
 	@Override
 	public E removeLast() {
-		E data = this.get(this.size() - 1);
-		this.remove(this.size() - 1);
-		return data;
+		return this.remove(this.size() - 1);
 	}
 
 	@Override
@@ -122,20 +126,12 @@ public class CircularlyLinkedList<E> implements List<E> {
 
 	@Override
 	public void addLast(E e) {
-		Node<E> newNode = new Node<E>(e);
-		if(this.tail == null){
-			tail = newNode;
-			this.length++;
-			return;
-		}
-		Node<E> old = this.getNode(this.size() - 1);
-		newNode.next = old.next;
-		old.next = newNode;
-		this.length++;
+		this.add(this.size(), e);
 	}
 
 	public void rotate() {
-
+		if(this.tail == null) throw new IllegalStateException("Cannot rotate an empty list");
+		this.tail = this.tail.next;
 	}
 	
 	public static void main(String[] args) {
@@ -147,19 +143,31 @@ public class CircularlyLinkedList<E> implements List<E> {
 		System.out.println(ll);
 
 		ll.removeFirst();
+		System.out.println("first removed");
 		System.out.println(ll);
 
 		ll.removeLast();
+		System.out.println("last removed");
+		System.out.println(ll);
 
 		ll.rotate();
+		System.out.println("rotated");
 		System.out.println(ll);
 
 		ll.removeFirst();
+		System.out.println("first removed");
+		System.out.println(ll);
+
 		ll.rotate();
+		System.out.println("rotated");
 		System.out.println(ll);
 
 		ll.removeLast();
+		System.out.println("last removed");
+		System.out.println(ll);
+
 		ll.rotate();
+		System.out.println("rotated");
 		System.out.println(ll);
 
 		for (Integer e : ll) {
@@ -171,7 +179,7 @@ public class CircularlyLinkedList<E> implements List<E> {
 	public String toString() {
 		return "CircularlyLinkedList{" +
 				"length=" + this.length +
-				", tail=" + this.tail.toString(this.tail) +
+				", " + this.tail.toString(this.tail) +
 				'}';
 	}
 }

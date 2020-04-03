@@ -1,19 +1,11 @@
 package projectCode20280;
 
 public class LinkedQueue<E> implements Queue<E> {
-	public Node<E> front;
-	public Node<E> rear;
-
+	private DoublyLinkedList<E> list;
 	public int length;
 
-	private static class Node<E>{
-		E data;
-		Node<E> next;
-		Node<E> prev;
-
-		Node(E e){
-			this.data = e;
-		}
+	public LinkedQueue(){
+		this.list = new DoublyLinkedList<>();
 	}
 
 	public static void main(String[] args) {
@@ -45,35 +37,23 @@ public class LinkedQueue<E> implements Queue<E> {
 
 	@Override
 	public void enqueue(E e) {
-		Node<E> last = new Node<>(e);
-		if(this.rear == null){
-			this.rear = last;
-			this.front = last;
-		}else{
-			last.next = this.rear;
-			this.rear.prev = last;
-			this.rear = last;
-		}
+		this.list.addLast(e);
 		this.length++;
 	}
 
 	@Override
 	public E first() {
-		return this.front.data;
+		return this.list.get(0);
 	}
 
 	@Override
 	public E dequeue() {
-		if(this.front != null){
-			E data = this.front.data;
-			if(this.front.prev != null) {
-				this.front.prev.next = null;
-			}
-			this.front = this.front.prev;
+		if(this.list.size() > 0){
+			E data = this.list.removeFirst();
 			this.length--;
 			return data;
 		}else{
-			throw new RuntimeException("queue is empty, cannot dequeue");
+			throw new IllegalStateException("queue is empty, cannot dequeue");
 		}
 
 	}

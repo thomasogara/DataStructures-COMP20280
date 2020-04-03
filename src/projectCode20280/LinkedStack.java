@@ -1,15 +1,10 @@
 package projectCode20280;
 
 public class LinkedStack<E> implements Stack<E> {
-	private int length;
-	private Node<E> head;
+	private SinglyLinkedList<E> list;
 
-	private static class Node<E>{
-		E data;
-		Node<E> next;
-		Node(E e){
-			this.data = e;
-		}
+	public LinkedStack(){
+		this.list = new SinglyLinkedList<>();
 	}
 
 	public static void main(String[] args) {
@@ -33,7 +28,7 @@ public class LinkedStack<E> implements Stack<E> {
 
 	@Override
 	public int size() {
-		return this.length;
+		return this.list.size();
 	}
 
 	@Override
@@ -43,27 +38,17 @@ public class LinkedStack<E> implements Stack<E> {
 
 	@Override
 	public void push(E e) {
-		Node<E> top = new Node<>(e);
-		top.next = this.head;
-		this.head = top;
-		this.length++;
+		this.list.addFirst(e);
 	}
 
 	@Override
 	public E top() {
-		return this.head.data;
+		return this.list.get(0);
 	}
 
 	@Override
 	public E pop() {
-		if(this.head != null) {
-			E data = this.head.data;
-			this.head = this.head.next;
-			this.length--;
-			return data;
-		}else{
-			throw new RuntimeException("this stack is empty, head cannot be popped");
-		}
+		return this.list.removeFirst();
 	}
 
 }

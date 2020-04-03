@@ -1,7 +1,6 @@
 package projectCode20280;
 
-import java.util.List;
-import java.util.ArrayList;
+import javafx.geometry.Pos;
 
 /**
  * An abstract base class providing some functionality of the BinaryTree interface.
@@ -56,11 +55,11 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E>
    */
   @Override
   public Iterable<Position<E>> children(Position<E> p) {
-    List<Position<E>> snapshot = new ArrayList<>(2);    // max capacity of 2
+    List<Position<E>> snapshot = new SinglyLinkedList<>();    // max capacity of 2
     if (left(p) != null)
-      snapshot.add(left(p));
+      snapshot.addLast(left(p));
     if (right(p) != null)
-      snapshot.add(right(p));
+      snapshot.addLast(right(p));
     return snapshot;
   }
 
@@ -70,10 +69,10 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E>
    * @param p       Position serving as the root of a subtree
    * @param snapshot  a list to which results are appended
    */
-  private void inorderSubtree(Position<E> p, List<Position<E>> snapshot) {
+  protected void inorderSubtree(Position<E> p, List<Position<E>> snapshot) {
     if (left(p) != null)
       inorderSubtree(left(p), snapshot);
-    snapshot.add(p);
+    snapshot.addLast(p);
     if (right(p) != null)
       inorderSubtree(right(p), snapshot);
   }
@@ -82,11 +81,27 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E>
    * Returns an iterable collection of positions of the tree, reported in inorder.
    * @return iterable collection of the tree's positions reported in inorder
    */
-  public Iterable<Position<E>> inorder() {
-    List<Position<E>> snapshot = new ArrayList<>();
+  public List<Position<E>> inorder() {
+    List<Position<E>> snapshot = new SinglyLinkedList<>();
     if (!isEmpty())
       inorderSubtree(root(), snapshot);   // fill the snapshot recursively
     return snapshot;
+  }
+
+  public List<Position<E>> preorder(){
+    List<Position<E>> snapshot = new SinglyLinkedList<>();
+    if(!isEmpty()){
+      preorderSubtree(root(), snapshot);
+    }
+    return snapshot;
+  }
+
+  protected void preorderSubtree(Position<E> p, List<Position<E>> snapshot){
+    snapshot.addLast(p);
+    if (left(p) != null)
+      preorderSubtree(left(p), snapshot);
+    if (right(p) != null)
+      preorderSubtree(right(p), snapshot);
   }
 
   /**
