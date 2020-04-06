@@ -1,6 +1,6 @@
 package projectCode20280;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ArrayQueue<E> implements Queue<E> {
 	private Object[] backing_array;
@@ -39,33 +39,22 @@ public class ArrayQueue<E> implements Queue<E> {
 
 	@Override
 	public void enqueue(E e) {
-		this.backing_array.add(e);
-		this.length++;
+
 	}
 
 	@Override
 	public E first() {
-		if(this.size() > 0){
-			return this.backing_array.get(0);
-		}
 		return null;
 	}
 
 	@Override
 	public E dequeue() {
-		if(this.size() > 0){
-			E data = this.backing_array.get(this.front);
-			this.backing_array.set(this.front, null);
-			this.length--;
-			this.front++;
-			return data;
-		}
 		return null;
 	}
 
 	@Override
 	public String toString(){
-		return this.backing_array.toString();
+		return Arrays.toString(this.backing_array);
 	}
 
 }

@@ -16,7 +16,6 @@ public class DoublyLinkedList<E> implements List<E> {
 			this.data = e;
 		}
 	}
-
 	private class ListIterator<E> implements Iterator<E>{
 		DoublyLinkedList<E> list;
 		int i;
@@ -93,14 +92,14 @@ public class DoublyLinkedList<E> implements List<E> {
 		if(index == 0){
 			Node<E> newNode = new Node<>(e);
 			newNode.next = this.head;
-			if(this.head != null) this.head.prev = newNode;
 			this.head = newNode;
+			if(newNode.next != null) newNode.next.prev = newNode;
 		}else if(index < this.size()){
 			this.addBetween(e, this.getNode(index - 1), this.getNode(index));
 		}else{
 			Node<E> newNode = new Node<>(e);
 			Node<E> prevTail = this.tail;
-			prevTail.next = newNode;
+			if(prevTail != null) prevTail.next = newNode;
 			newNode.prev = prevTail;
 			this.tail = newNode;
 		}
@@ -114,7 +113,7 @@ public class DoublyLinkedList<E> implements List<E> {
 		if(index == 0){
 			curr = this.head;
 			this.head = this.head.next;
-			this.head.prev = null;
+			if(this.head != null) this.head.prev = null;
 		}else if(index < this.size()){
 			curr = this.getNode(index);
 			curr.prev.next = curr.next;
@@ -167,6 +166,7 @@ public class DoublyLinkedList<E> implements List<E> {
 		s.append("\n");
 		return s.toString();
 	}
+
 
 	public static void main(String[] args) {
 		DoublyLinkedList<Integer> ll = new DoublyLinkedList<Integer>();
