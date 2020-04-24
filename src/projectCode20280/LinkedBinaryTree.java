@@ -17,7 +17,7 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
      * Construts an empty binary tree.
      */
     public LinkedBinaryTree() {
-
+        super();
     }
 
     public static void main(String[] args) {
@@ -141,25 +141,8 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
     }
 
     private Node<E> addRecursive(Node<E> p, E e) {
-        if(p.left == null){
-            addLeft(p, e);
-            return p.left;
-        }
-        if(p.right == null){
-            addRight(p, e);
-            return p.right;
-        }
 
-        SinglyLinkedList<Position<E>> leftChildren = new SinglyLinkedList<>();
-        SinglyLinkedList<Position<E>> rightChildren = new SinglyLinkedList<>();
-        inorderSubtree(p.left, leftChildren);
-        inorderSubtree(p.right, rightChildren);
-
-        if(leftChildren.size() <= rightChildren.size()){
-            return addRecursive(p.left, e);
-        }else{
-            return addRecursive(p.right, e);
-        }
+        return null;
     }
 
 
@@ -218,7 +201,11 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
      * @throws IllegalArgumentException if p is not a leaf
      */
     public void attach(Position<E> p, LinkedBinaryTree<E> t1, LinkedBinaryTree<E> t2) throws IllegalArgumentException {
-
+        if(validate(p).left != null || validate(p).right != null) throw new IllegalArgumentException("p must have 0 children, has " + numChildren(p));
+        validate(p).left = (Node<E>) t1.root();
+        validate(p).right = (Node<E>) t2.root();
+        t1.addRoot(null);
+        t2.addRoot(null);
     }
 
     /**
@@ -231,14 +218,25 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
      */
     public E remove(Position<E> p) throws IllegalArgumentException {
         Node<E> node = validate(p);
+        // remove fails if a node has more than one child
         if(node.left != null && node.right != null) throw new IllegalArgumentException("cannot remove position which has two children");
         Node<E> parent = node.parent;
+        // if node is left child of parent
         if(parent.left == node){
             parent.left = (node.left == null ? node.right : node.left);
-        }else{
+        }
+        // if node is right child of parent
+        else{
             parent.right = (node.left == null ? node.right : node.left);
         }
-        node.parent = node; // invalidate node
+        // set parent of node's child to be equal to node's parent
+        // i.e. de-thread the node from the tree
+        (node.left == null ? node.right : node.left).parent = parent;
+
+        // invalidate node
+        node.parent = node;
+
+        // return the removed, invalidated node
         return node.data;
 
     }
@@ -250,14 +248,6 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
         List<Position<E>> inorders = inorder();
         for(int i = 0; i < inorders.size(); i++){
             sb.append(inorders.get(i).getElement());
-            sb.append(", ");
-        }
-        sb.append("]\n");
-
-        sb.append("preorder: [");
-        List<Position<E>> preorders = preorder();
-        for(int i = 0; i < preorders.size(); i++){
-            sb.append(preorders.get(i).getElement());
             sb.append(", ");
         }
         sb.append("]\n");

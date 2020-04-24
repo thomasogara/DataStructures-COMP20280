@@ -80,6 +80,8 @@ public class LinkedCircularQueue<E> implements Queue<E> {
 
 	public void rotate(){
 		if(this.front == null) throw new IllegalStateException("cannot rotate empty queue");
+        this.rear.next = this.front;
+        this.rear = this.front;
 		this.front = this.front.next;
 	}
 

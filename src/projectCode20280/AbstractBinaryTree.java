@@ -96,6 +96,7 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E>
     return snapshot;
   }
 
+
   protected void preorderSubtree(Position<E> p, List<Position<E>> snapshot){
     snapshot.addLast(p);
     if (left(p) != null)
