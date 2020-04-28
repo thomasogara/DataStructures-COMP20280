@@ -28,18 +28,29 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
             bt.insert(i);
         }
         System.out.println("bt (size = " + bt.size() + "):\n" + bt);
+    }
 
   /** Nested static class for a binary tree node. */
   protected static class Node<E> implements Position<E> {
-	  // TODO
+      E data;
+	  Node<E> parent;
+	  Node<E> left;
+	  Node<E> right;
 
 	  public Node(E e, Node<E> above, Node<E> leftChild, Node<E> rightChild) {
-	    }
+	      this.data = e;
+	      this.parent = above;
+	      this.left = leftChild;
+	      this.right = rightChild;
+	  }
+
+	  public Node(E e){
+	      this.data = e;
+      }
 
 	@Override
 	public E getElement() throws IllegalStateException {
-		// TODO Auto-generated method stub
-		return null;
+		return data;
 	}
 
   }
@@ -265,31 +276,6 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
         }
         sb.append("]\n");
         return sb.toString();
-    }
-
-    /**
-     * Nested static class for a binary tree node.
-     */
-    protected static class Node<E> implements Position<E> {
-        Node<E> parent;
-        Node<E> left;
-        Node<E> right;
-        E data;
-
-        Node(E e, Node<E> parent, Node<E> left, Node<E> right) {
-            this.data = e;
-            this.parent = parent;
-            this.left = left;
-            this.right = right;
-        }
-
-        Node(E e){
-            this.data = e;
-        }
-
-        public E getElement() {
-            return this.data;
-        }
     }
 } 
 
