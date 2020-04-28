@@ -29,7 +29,20 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
         }
         System.out.println("bt (size = " + bt.size() + "):\n" + bt);
 
-    }
+  /** Nested static class for a binary tree node. */
+  protected static class Node<E> implements Position<E> {
+	  // TODO
+
+	  public Node(E e, Node<E> above, Node<E> leftChild, Node<E> rightChild) {
+	    }
+
+	@Override
+	public E getElement() throws IllegalStateException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+  }
 
     /**
      * Factory function to create a new node storing element e.
