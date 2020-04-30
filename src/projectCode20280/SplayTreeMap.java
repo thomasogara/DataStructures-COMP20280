@@ -2,7 +2,7 @@ package projectCode20280;
 
 import java.util.Comparator;
 
-public class SplayTreeMap<K,V> extends TreeMap<K,V> {
+public class SplayTreeMap<K extends Comparable<K>,V> extends TreeMap<K,V> {
 
     protected BalanceableBinaryTree<K, V> tree = new BalanceableBinaryTree<>();
 

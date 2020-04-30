@@ -4,7 +4,7 @@ package projectCode20280;
  * An interface for an associative map which binds a key uniquely to a value.
  * This interface is a simplified version of java.util.Map.
  */
-public interface Map<K, V> {
+public interface Map<K extends Comparable<K>, V> {
 
 	/**
 	 * Returns the number of entries in the map.

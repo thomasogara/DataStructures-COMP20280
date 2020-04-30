@@ -15,13 +15,13 @@ import java.util.Comparator;
  *    is appropriate for use with the comparator
  * 4) It provides an isEmpty implementation based upon the abstract size() method.
  */
-public abstract class AbstractPriorityQueue<K,V> implements PriorityQueue<K,V> {
+public abstract class AbstractPriorityQueue<K extends Comparable<K>,V> implements PriorityQueue<K,V> {
   //---------------- nested PQEntry class ----------------
   /**
    * A concrete implementation of the Entry interface to be used within
    * a PriorityQueue implementation.
    */
-  protected static class PQEntry<K,V> implements Entry<K,V> {
+  protected static class PQEntry<K extends Comparable<K>,V> implements Entry<K,V> {
     private K k;  // key
     private V v;  // value
 
@@ -37,6 +37,11 @@ public abstract class AbstractPriorityQueue<K,V> implements PriorityQueue<K,V> {
     // utilities not exposed as part of the Entry interface
     protected void setKey(K key) { k = key; }
     protected void setValue(V value) { v = value; }
+
+    @Override
+    public int compareTo(Entry<K, V> o) {
+      return getKey().compareTo(o.getKey());
+    }
   } //----------- end of nested PQEntry class -----------
 
   // instance variable for an AbstractPriorityQueue

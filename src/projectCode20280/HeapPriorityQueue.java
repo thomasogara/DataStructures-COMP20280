@@ -3,13 +3,14 @@ package projectCode20280;
 /*
  */
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
  * An implementation of a priority queue using an array-based heap.
  */
 
-public class HeapPriorityQueue<K,V> extends AbstractPriorityQueue<K,V> {
+public class HeapPriorityQueue<K extends Comparable<K>,V> extends AbstractPriorityQueue<K,V> {
   private ArrayList<PQEntry<K,V>> values = new ArrayList<>();
 
 	/** Creates an empty priority queue based on the natural ordering of its keys. */

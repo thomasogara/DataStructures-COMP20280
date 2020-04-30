@@ -23,11 +23,13 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
     public static void main(String[] args) {
         LinkedBinaryTree<Integer> bt = new LinkedBinaryTree<>();
 
-        int[] arr = {12, 25, 31, 58, 36, 42, 90, 62, 75};
+        int[] arr = {44, 17, 88, 8, 32, 65, 97, 28, 54, 82, 93, 21, 29, 76, 80};
         for (int i : arr) {
             bt.insert(i);
         }
         System.out.println("bt (size = " + bt.size() + "):\n" + bt);
+        BinaryTreePrinter<Integer> btp = new BinaryTreePrinter<>(bt);
+        System.out.println(btp.print());
     }
 
   /** Nested static class for a binary tree node. */
@@ -53,6 +55,11 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
 		return data;
 	}
 
+      @Override
+      public String toString() {
+	      if(data == null) return "null";
+          return data.toString();
+      }
   }
 
     /**
@@ -154,6 +161,7 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
     public Position<E> addRoot(E e) throws IllegalStateException {
         if (root != null) throw new IllegalStateException("root already exists for this tree");
         else this.root = new Node<>(e);
+        ++size;
         return this.root;
     }
 
@@ -161,12 +169,26 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
         //recursively add from root
         if(root == null) addRoot(e);
         else addRecursive(root, e);
-        ++size;
     }
 
     private Node<E> addRecursive(Node<E> p, E e) {
-
-        return null;
+        int c = p.getElement().compareTo(e);
+        if(c == 0){
+            p.data = e;
+            return p;
+        }else if(c > 0){
+            if(p.left == null){
+                addLeft(p, e);
+                return p.left;
+            }
+            else return addRecursive(p.left, e);
+        }else{
+            if(p.right == null){
+                addRight(p, e);
+                return p.right;
+            }
+            else return addRecursive(p.right, e);
+        }
     }
 
 
@@ -182,6 +204,7 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
     public Position<E> addLeft(Position<E> p, E e) throws IllegalArgumentException {
         if (validate(p).left != null) throw new IllegalStateException("left already exists at this node");
         else validate(p).left = new Node<E>(e, validate(p), null, null);
+        ++size;
         return validate(p).left;
     }
 
@@ -197,6 +220,7 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
     public Position<E> addRight(Position<E> p, E e) throws IllegalArgumentException {
         if (validate(p).right != null) throw new IllegalStateException("right already exists at this node");
         else validate(p).right = new Node<E>(e, validate(p), null, null);
+        ++size;
         return validate(p).right;
     }
 
@@ -210,8 +234,9 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
      */
     public E set(Position<E> p, E e) throws IllegalArgumentException {
         Node<E> node = validate(p);
+        E old = node.data;
         node.data = e;
-        return node.data;
+        return old;
     }
 
     /**
@@ -232,6 +257,21 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
         t2.addRoot(null);
     }
 
+    public void createLevelOrder(E[] a){
+        root = createLevelOrderHelper(a, root, 0);
+    }
+
+    private Node<E> createLevelOrderHelper(E[] a, Node<E> p, int i){
+        if(i < a.length) {
+            Node<E> n = new Node<>(a[i], p, null, null);
+            n.left = createLevelOrderHelper(a, n.left, 2 * i + 1);
+            n.right = createLevelOrderHelper(a, n.right, 2 * i + 2);
+            ++size;
+            return n;
+        }
+        return p;
+    }
+
     /**
      * Removes the node at Position p and replaces it with its child, if any.
      *
@@ -243,38 +283,50 @@ public class LinkedBinaryTree<E extends Comparable<E>> extends AbstractBinaryTre
     public E remove(Position<E> p) throws IllegalArgumentException {
         Node<E> node = validate(p);
         // remove fails if a node has more than one child
-        if(node.left != null && node.right != null) throw new IllegalArgumentException("cannot remove position which has two children");
+        if(numChildren(p) == 2) throw new IllegalArgumentException("cannot remove position which has two children");
         Node<E> parent = node.parent;
-        // if node is left child of parent
-        if(parent.left == node){
-            parent.left = (node.left == null ? node.right : node.left);
-        }
-        // if node is right child of parent
-        else{
-            parent.right = (node.left == null ? node.right : node.left);
-        }
+        Node<E> child = (node.left == null ? node.right : node.left);
+
         // set parent of node's child to be equal to node's parent
         // i.e. de-thread the node from the tree
-        (node.left == null ? node.right : node.left).parent = parent;
+        if(child != null) child.parent = parent;
 
+        // if removing root, set root to child
+        if(node == root){
+            root = child;
+        }
+        // else if not removing root, promote child
+        else {
+            // if node is left child of parent
+            if (parent.left == node) {
+                // promote node's child
+                parent.left = child;
+            }
+            // if node is right child of parent
+            else {
+                // promote node's child
+                parent.right = child;
+            }
+        }
         // invalidate node
         node.parent = node;
-
+        // decrement size
+        --size;
         // return the removed, invalidated node
-        return node.data;
+        return node.getElement();
 
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("inorder: [");
+        sb.append("[");
         List<Position<E>> inorders = inorder();
         for(int i = 0; i < inorders.size(); i++){
             sb.append(inorders.get(i).getElement());
-            sb.append(", ");
+            if(i < inorders.size() - 1) sb.append(", ");
         }
-        sb.append("]\n");
+        sb.append("]");
         return sb.toString();
     }
 } 

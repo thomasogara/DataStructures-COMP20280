@@ -14,7 +14,7 @@ import java.util.Iterator;
  * use of a presumed implementation of the entrySet method.
  *
  */
-public abstract class AbstractMap<K, V> implements Map<K, V> {
+public abstract class AbstractMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	/**
 	 * Tests whether the map is empty.
@@ -31,7 +31,7 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 	 * A concrete implementation of the Entry interface to be used within a Map
 	 * implementation.
 	 */
-	protected static class MapEntry<K, V> implements Entry<K, V> {
+	protected static class MapEntry<K extends Comparable<K>, V> implements Entry<K, V> {
 		private K k; // key
 		private V v; // value
 
@@ -63,6 +63,11 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 		/** Returns string representation (for debugging only) */
 		public String toString() {
 			return "<" + k + ", " + v + ">";
+		}
+
+		@Override
+		public int compareTo(Entry<K, V> o) {
+			return getKey().compareTo(o.getKey());
 		}
 	} // ----------- end of nested MapEntry class -----------
 

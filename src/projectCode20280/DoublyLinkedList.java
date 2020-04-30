@@ -41,6 +41,14 @@ public class DoublyLinkedList<E> implements List<E> {
 		}
 	}
 
+	public E first(){
+		return head.data;
+	}
+
+	public E last(){
+		return tail.data;
+	}
+
 	private void addBetween(E e, Node<E> predecessor, Node<E> successor) {
 		Node<E> newNode = new Node<>(e);
 		if(predecessor != null) predecessor.next = newNode;

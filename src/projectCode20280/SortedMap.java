@@ -11,7 +11,7 @@ package projectCode20280;
  * that blends features of java.util.SortedMap and java.util.NavigableMap.
  */
 
-public interface SortedMap<K, V> extends Map<K, V> {
+public interface SortedMap<K extends Comparable<K>, V> extends Map<K, V> {
 
 	/**
 	 * Returns the entry having the least key (or null if map is empty).

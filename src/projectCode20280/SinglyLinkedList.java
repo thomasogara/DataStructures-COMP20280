@@ -50,6 +50,15 @@ public class SinglyLinkedList<E> implements List<E>{
 		return this.getNode(index).data;
 	}
 
+	public E first(){
+		if(head == null) return null;
+		return head.data;
+	}
+
+	public E last(){
+		return get(size() - 1);
+	}
+
 	private Node<E> getNode(int index){
 		if(index > this.size() || index < 0) throw new IndexOutOfBoundsException(String.format("Index %d is out of bounds in list of size %d", index, this.size()));
 		Node<E> node = this.head;
@@ -124,11 +133,13 @@ public class SinglyLinkedList<E> implements List<E>{
 	public String toString(){
 		Node<E> curr = this.head;
 		StringBuilder s = new StringBuilder();
+		s.append("[");
 		while(curr != null){
-			s.append(curr.data).append("->");
+			s.append(curr.data);
+			if(curr.next != null) s.append(", ");
 			curr = curr.next;
 		}
-		s.append("\n");
+		s.append("]");
 		return s.toString();
 	}
 

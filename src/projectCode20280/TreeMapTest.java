@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import java.beans.BeanInfo;
+
 class TreeMapTest {
 
 	@Test
@@ -63,7 +65,9 @@ class TreeMapTest {
 		}
 
 		assertEquals(12, map.size());
+		System.out.println(new BinaryTreePrinter<>(map.tree).print());
 		assertEquals("26", map.remove(26));
+		System.out.println(new BinaryTreePrinter<>(map.tree).print());
 		assertEquals(11, map.size());
 
 	}

@@ -1,7 +1,7 @@
 package projectCode20280;
 
 
-public class BalanceableBinaryTree<K, V> extends LinkedBinaryTree<Entry<K, V>> {
+public class BalanceableBinaryTree<K extends Comparable<K>, V> extends LinkedBinaryTree<Entry<K, V>> {
 	// -------------- nested BSTNode class --------------
 	// this extends the inherited LinkedBinaryTree.Node class
 	protected static class BSTNode<E> extends Node<E> {
