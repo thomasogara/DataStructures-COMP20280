@@ -58,4 +58,8 @@ public class LinkedQueue<E> implements Queue<E> {
 
 	}
 
+	@Override
+	public String toString() {
+		return list.toString();
+	}
 }

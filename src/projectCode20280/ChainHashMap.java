@@ -30,7 +30,7 @@ public class ChainHashMap<K extends Comparable<K>, V> extends AbstractHashMap<K,
 	@Override
 	@SuppressWarnings({ "unchecked" })
 	protected void createTable() {
-
+		table = (UnsortedTableMap<K, V>[]) new UnsortedTableMap[capacity];
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class ChainHashMap<K extends Comparable<K>, V> extends AbstractHashMap<K,
 	 */
 	@Override
 	protected V bucketGet(int h, K k) {
-		return null;
+		return table[h] == null ? null : table[h].get(k);
 	}
 
 	/**
@@ -57,7 +57,15 @@ public class ChainHashMap<K extends Comparable<K>, V> extends AbstractHashMap<K,
 	 */
 	@Override
 	protected V bucketPut(int h, K k, V v) {
-		return null;
+		UnsortedTableMap<K, V> bucket = table[h];
+		if(bucket == null){
+			bucket = new UnsortedTableMap<>();
+			table[h] = bucket;
+		}
+		int oldSize = bucket.size();
+		V old = bucket.put(k, v);
+		if(oldSize < bucket.size()) ++n;
+		return old;
 	}
 
 	/**
@@ -70,7 +78,14 @@ public class ChainHashMap<K extends Comparable<K>, V> extends AbstractHashMap<K,
 	 */
 	@Override
 	protected V bucketRemove(int h, K k) {
-		return null;
+		UnsortedTableMap<K, V> bucket = table[h];
+		if(bucket == null){
+			return null;
+		}
+		int oldSize = bucket.size();
+		V old = bucket.remove(k);
+		if(oldSize > bucket.size()) --n;
+		return old;
 	}
 
 	/**
@@ -80,9 +95,21 @@ public class ChainHashMap<K extends Comparable<K>, V> extends AbstractHashMap<K,
 	 */
 	@Override
 	public Iterable<Entry<K, V>> entrySet() {
-		return null;
+		ArrayList<Entry<K, V>> entries = new ArrayList<>();
+		for(UnsortedTableMap<K, V> bucket : table){
+			if(bucket == null) continue;
+			for(Entry<K, V> e : bucket.entrySet()){
+				if(e != null) entries.add(e);
+			}
+		}
+		return entries;
 	}
-	
+
+	@Override
+	public String toString() {
+		return entrySet().toString();
+	}
+
 	public static void main(String[] args) {
 		//HashMap<Integer, String> m = new HashMap<Integer, String>();
 		ChainHashMap<Integer, String> m = new ChainHashMap<Integer, String>();

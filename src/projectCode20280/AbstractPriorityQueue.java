@@ -42,6 +42,11 @@ public abstract class AbstractPriorityQueue<K extends Comparable<K>,V> implement
     public int compareTo(Entry<K, V> o) {
       return getKey().compareTo(o.getKey());
     }
+
+    @Override
+    public String toString() {
+      return getKey().toString();
+    }
   } //----------- end of nested PQEntry class -----------
 
   // instance variable for an AbstractPriorityQueue

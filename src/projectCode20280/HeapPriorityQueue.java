@@ -164,6 +164,11 @@ public class HeapPriorityQueue<K extends Comparable<K>,V> extends AbstractPriori
     return answer;
   }
 
+  @Override
+  public String toString() {
+    return values.toString();
+  }
+
   public static void main(String[] args){
     HeapPriorityQueue hpq = new HeapPriorityQueue<Integer, Integer>();
     hpq.add(new PQEntry<Integer, Integer>(0, 0));

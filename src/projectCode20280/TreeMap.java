@@ -430,27 +430,4 @@ public class TreeMap<K extends Comparable<K>, V> extends AbstractSortedMap<K, V>
 		System.out.println("tree entries after removal: " + treeMap.entrySet());
 		System.out.println(new BinaryTreePrinter<>(treeMap.tree).print());
 	}
-
-	/** Overrides the TreeMap rebalancing hook that is called after an insertion. */
-	protected void rebalanceInsert(Position<Entry<K, V>> p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/** Overrides the TreeMap rebalancing hook that is called after a deletion. */
-	protected void rebalanceDelete(Position<Entry<K, V>> p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/** Overrides the TreeMap rebalancing hook that is called after a node access. */
-	protected void rebalanceAccess(Position<Entry<K, V>> p) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-    protected void rotate(Position<Entry<K, V>> p) {
-        // TODO
-    }
-    
 }

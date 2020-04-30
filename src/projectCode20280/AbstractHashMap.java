@@ -16,8 +16,7 @@ import java.util.Random;
  * and for accurately maintaining the protected member, n,
  * to reflect changes within bucketPut and bucketRemove.
  */
-public abstract class AbstractHashMap<K extends Comparable<K>, V> extends AbstractMap<K, V> {
-    protected int n = 0;                 // number of entries in the dictionary
+public abstract class AbstractHashMap<K extends Comparable<K>, V> extends AbstractMap<K, V> {    protected int n = 0;                 // number of entries in the dictionary
     protected int capacity;              // length of the table
     private int prime;                   // prime factor
     private long scale, shift;           // the shift and scaling factors
@@ -107,15 +106,14 @@ public abstract class AbstractHashMap<K extends Comparable<K>, V> extends Abstra
      * Hash function applying MAD method to default hash code.
      */
     private int hashValue(K key) {
-        // TODO
-    	return 0;
+        return (int) ((scale * key.hashCode() + shift) % prime) % capacity;
     }
 
     /**
      * Updates the size of the hash table and rehashes all entries.
      */
     private void resize(int newCap) {
-    	// TODO
+
     }
 
     // protected abstract methods to be implemented by subclasses

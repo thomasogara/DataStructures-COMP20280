@@ -1,6 +1,10 @@
 package projectCode20280;
 
 public class LinkedDeque<E> implements Deque<E> {
+	// NOTE: My DoublyLinkedList class supports constant-time
+	// insertions, retrievals, and removals at both ends. This makes it ideal
+	// as an underlying data structure for a Deque, which needs constant
+	// time insertions, retrievals, and removals at both ends
 	private DoublyLinkedList<E> list;
 
 	public static void main(String[] args) {
